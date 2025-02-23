@@ -1,0 +1,14 @@
+workflows:
+  ios-android-workflow:
+    name: iOS and Android Workflow
+    environment:
+      flutter: stable
+    scripts:
+      - name: Clean build cache
+        script: flutter clean
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Build iOS
+        script: flutter build ios --release
+      - name: Build Android
+        script: flutter build apk --release
