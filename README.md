@@ -69,7 +69,7 @@ Dentalistasyon/
 
 ## 📌 Contributors
 
-- **Alaa** - Lead Developer
+- **Alaa Qutfa** - Lead Developer
 
 ## 📜 License
 
