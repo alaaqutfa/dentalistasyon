@@ -45,7 +45,6 @@ Widget guestBtn(
       border: Border.all(
         width: 1,
         color: Themes.primary,
-        
       ),
       borderRadius: Themes.borderRadiusMd,
     ),
@@ -72,3 +71,4 @@ Widget defLink(Function()? onTap, String text) {
     ),
   );
 }
+

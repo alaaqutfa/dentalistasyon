@@ -5,14 +5,14 @@ import 'package:get/get.dart';
 class SetlocaleController extends GetxController {
   Locale? language;
   Services services = Get.find();
-  late String? currentLocale = services.shared.getString("lang");
+  String currentLocale = "tr";
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    currentLocale = services.shared.getString("lang");
-    if (currentLocale != null) {
-      language = Locale(currentLocale!);
+    if (services.shared.getString("lang") != null) {
+      currentLocale = services.shared.getString("lang")!;
+      language = Locale(currentLocale);
     } else {
       //Get.deviceLocale!.languageCode
       services.shared.setString("lang", "tr");
@@ -24,7 +24,7 @@ class SetlocaleController extends GetxController {
   setLocale(String locale) {
     Locale localeCode = Locale(locale);
     services.shared.setString("lang", locale);
-    currentLocale = locale; 
+    currentLocale = locale;
     Get.updateLocale(localeCode);
     update();
     Future.delayed(Duration(milliseconds: 500), () {

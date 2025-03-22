@@ -1,5 +1,5 @@
 import 'package:dentalistasyon/core/utils/constant.dart';
-import 'package:dentalistasyon/data/model/auth.modal.dart';
+import 'package:dentalistasyon/data/model/auth.model.dart';
 import 'package:dentalistasyon/view/widgets/auth/body.auth.dart';
 import 'package:dentalistasyon/view/widgets/auth/build.form.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +11,6 @@ class SignupBody extends StatelessWidget {
   final RxBool isChecked;
   final Function()? onTapPrimaryBtn;
   final Function()? onTapGuestBtn;
-  final List<String> rolelist;
-  final String roleValue;
-  final Function(Object?)? onChangedRole;
   final Map<String, TextEditingController> controllers;
   const SignupBody({
     super.key,
@@ -21,10 +18,7 @@ class SignupBody extends StatelessWidget {
     required this.isChecked,
     this.formKey,
     this.onTapPrimaryBtn,
-    this.onTapGuestBtn,
-    required this.rolelist,
-    required this.roleValue,
-    this.onChangedRole, required this.controllers,
+    this.onTapGuestBtn, required this.controllers,
   });
 
   @override
@@ -40,9 +34,6 @@ class SignupBody extends StatelessWidget {
         false,
         onTapPrimaryBtn,
         onTapGuestBtn,
-        rolelist,
-        roleValue,
-        onChangedRole,
         controllers
       ),
       question: "Already have an account?",

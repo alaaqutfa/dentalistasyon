@@ -13,23 +13,18 @@ class Verify extends StatelessWidget {
         init: VerifyControllerImp(context: context),
         builder: (controller) => VerifyBody(
           seconds: controller.seconds,
-          autovalidate: controller.autovalidate,
-          onCodeChanged: (value) {
-            controller.autovalidate.value =
-                controller.data["OTP"]?.contains(value) ?? false;
-            controller.update();
-          },
           onSubmit: (value) {
-            controller.autovalidate.value = controller.data["OTP"] == value;
+            controller.validate = true;
+            controller.otp = value;
             controller.update();
           },
-          onTapSendAgain: () {
-            controller.resetCountdown();
+          onTapSendAgain: () async {
+            await controller.resend();
           },
-          onTapVerify: () async {
+          onTapVerify: controller.validate ? () async {
             await controller.verify();
-          },
-          email: controller.data["email"],
+          } : null,
+          email: controller.data["user"]["email"],
         ),
       ),
     );

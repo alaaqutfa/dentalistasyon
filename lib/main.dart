@@ -3,7 +3,7 @@ import 'package:dentalistasyon/core/localization/translation.dart';
 import 'package:dentalistasyon/core/services/services.dart';
 import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/data/routes/routes.dart';
-import 'package:dentalistasyon/view/screens/splash.dart';
+import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,8 +25,25 @@ class Dentalistasyon extends StatelessWidget {
       title: 'Dentalistasyon',
       translations: Languages(),
       locale: Get.find<SetlocaleController>().language,
+      color: Themes.primary,
       theme: ThemeData(
         fontFamily: "Poppins",
+        switchTheme: SwitchThemeData(
+          trackColor: MaterialStateProperty.resolveWith<Color>((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return Themes.stroke;
+            }
+            return Themes.primary;
+          }),
+          thumbColor: MaterialStateProperty.resolveWith<Color>((states) {
+            return Themes.light;
+          }),
+          trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
+          trackOutlineWidth:
+              MaterialStateProperty.resolveWith<double>((states) {
+            return 0;
+          }),
+        ),
         primaryColor: Themes.primary,
         scaffoldBackgroundColor: Themes.bg,
         badgeTheme: BadgeThemeData(
@@ -36,10 +53,8 @@ class Dentalistasyon extends StatelessWidget {
           backgroundColor: Themes.bg,
         ),
       ),
-      home: SafeArea(
-        child: const Splash(),
-      ),
-      routes: routes,
+      initialRoute: AppRoutes.splash,
+      getPages: AppPages.routes,
     );
   }
 }

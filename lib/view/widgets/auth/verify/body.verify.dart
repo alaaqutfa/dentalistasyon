@@ -7,17 +7,13 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class VerifyBody extends StatelessWidget {
   final String email;
-  final RxBool autovalidate;
   final void Function(String)? onSubmit;
-  final void Function(String)? onCodeChanged;
   final RxInt seconds;
   final Function()? onTapSendAgain;
   final Function()? onTapVerify;
   const VerifyBody({
     super.key,
     this.onSubmit,
-    required this.autovalidate,
-    this.onCodeChanged,
     required this.seconds,
     this.onTapSendAgain,
     this.onTapVerify,
@@ -33,7 +29,7 @@ class VerifyBody extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            topContent(autovalidate, onSubmit, onCodeChanged, email),
+            topContent(onSubmit, email),
             Themes.spaceY64,
             bottomContent(
               seconds,
@@ -48,9 +44,7 @@ class VerifyBody extends StatelessWidget {
 }
 
 Widget topContent(
-  RxBool autovalidate,
   void Function(String)? onSubmit,
-  void Function(String)? onCodeChanged,
   String email,
 ) {
   return ListView(
@@ -79,25 +73,21 @@ Widget topContent(
         ),
       ),
       Themes.spaceY32,
-      Obx(
-        () => Center(
-          child: OtpTextField(
-            autoFocus: true,
-            numberOfFields: 4,
-            fieldWidth: 64,
-            fieldHeight: 64,
-            fillColor: Themes.bg,
-            borderColor: Themes.stroke,
-            enabledBorderColor:
-                autovalidate.value ? Themes.stroke : Themes.error,
-            cursorColor: Themes.primary,
-            focusedBorderColor: Themes.primary,
-            showFieldAsBox: true,
-            borderRadius: Themes.borderRadiusSm,
-            textStyle: Themes.text_base,
-            onCodeChanged: onCodeChanged,
-            onSubmit: onSubmit,
-          ),
+      Center(
+        child: OtpTextField(
+          autoFocus: true,
+          numberOfFields: 4,
+          fieldWidth: 64,
+          fieldHeight: 64,
+          fillColor: Themes.bg,
+          borderColor: Themes.stroke,
+          enabledBorderColor:  Themes.stroke,
+          cursorColor: Themes.primary,
+          focusedBorderColor: Themes.primary,
+          showFieldAsBox: true,
+          borderRadius: Themes.borderRadiusSm,
+          textStyle: Themes.text_base,
+          onSubmit: onSubmit,
         ),
       ),
       Themes.spaceY32,

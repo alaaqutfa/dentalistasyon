@@ -1,5 +1,7 @@
 import 'package:dentalistasyon/controller/auth/signup.controller.dart';
+import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/view/widgets/auth/signup/body.signup.dart';
+import 'package:dentalistasyon/view/widgets/partials/language.btn.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,21 +15,19 @@ class Signup extends StatelessWidget {
       body: GetBuilder(
         init: SignupControllerImp(context: context),
         builder: (controller) => SignupBody(
-          formKey: controller.formKey,
+          formKey: controller.signupFormKey,
           isChecked: controller.isChecked,
           isObscured: controller.isObscured,
           onTapPrimaryBtn: () async {
             await controller.signup();
           },
           onTapGuestBtn: () {},
-          rolelist: controller.role,
-          roleValue: controller.roleValue,
-          onChangedRole: (value) {
-            controller.roleValue = value.toString();
-            controller.update();
-          },
           controllers: controller.controllers,
         ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: Themes.edgeMd,
+        child: langBtn(),
       ),
     );
   }

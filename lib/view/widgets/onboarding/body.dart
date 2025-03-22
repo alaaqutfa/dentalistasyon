@@ -2,6 +2,7 @@ import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:dentalistasyon/view/widgets/onboarding/pagebody.dart';
 import 'package:dentalistasyon/view/widgets/onboarding/pageimage.dart';
+import 'package:dentalistasyon/view/widgets/partials/language.btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -41,30 +42,19 @@ class OnboardingBody extends StatelessWidget {
           "Skip".tr,
           style: Themes.text_base,
         ),
-        leading: InkWell(
-          onTap: leadingFunction,
-          child: SizedBox(
-            width: Spacing.lg,
-            height: Spacing.lg,
-            child: Image.asset(
-              AppImg.language_icon,
-              color: Themes.primary,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
+        leading: langBtn(),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               "Login".tr,
-              style: Themes.text_base,
+              style: Themes.text_base.copyWith(color: Themes.primary),
             ),
             Themes.spaceX8,
             FaIcon(
               FontAwesomeIcons.rightToBracket,
               size: 20,
-              color: Themes.text,
+              color: Themes.primary,
             ),
           ],
         ),
@@ -73,6 +63,7 @@ class OnboardingBody extends StatelessWidget {
           "v$version",
           style: Themes.text_sm.copyWith(
             color: Themes.text.withOpacity(0.5),
+            fontWeight: FontWeight.w800,
           ),
         ),
         background: [
@@ -88,20 +79,24 @@ class OnboardingBody extends StatelessWidget {
         ],
         pageBodies: [
           PageBody(
-            title: "Fast and Secure Supply".tr,
+            icon: "🦷",
+            title: "Discover Top-Quality Dental Supplies".tr,
             description:
-                "Easily connect medical supply warehouses with hospitals and doctors."
+                "Welcome to Dentali Stasyon! Your one-stop shop for high-quality dental supplies."
                     .tr,
           ),
           PageBody(
-            title: "Easy Order Management".tr,
+            icon: "🛒",
+            title: "Shop Easily from Trusted Suppliers".tr,
             description:
-                "Quickly find and order the medical products you need.".tr,
+                "Browse and buy dental supplies directly from trusted stores and warehouses."
+                    .tr,
           ),
           PageBody(
-            title: "Reliable and Efficient Service".tr,
+            icon: "🚚",
+            title: "Fast & Secure Delivery to Your Door".tr,
             description:
-                "We provide seamless supply solutions for the healthcare sector."
+                "Enjoy a seamless shopping experience with secure payments and fast delivery."
                     .tr,
           ),
         ],

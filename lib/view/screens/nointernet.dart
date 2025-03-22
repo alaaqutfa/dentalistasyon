@@ -11,8 +11,8 @@ class NoInternet extends StatelessWidget {
     SplashControllerImp controller = Get.put(SplashControllerImp(context));
     return Scaffold(
       body: NoInternetBody(
-        onTap: () {
-          controller.splashFunction(true);
+        onTap: () async {
+          await controller.splashFunction(true);
         },
       ),
     );

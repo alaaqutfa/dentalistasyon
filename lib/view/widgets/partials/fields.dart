@@ -11,17 +11,19 @@ class InputField extends StatelessWidget {
   final TextEditingController? controller;
   final bool? obscureText;
   final bool? autofocus;
-  final String labelText;
+  final String? labelText;
   final String hintText;
-  final Icon icon;
+  final String icon;
   final String? initialValue;
   final int? hintMaxLines;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
   final int? maxLines;
+  final bool hasLabel;
   const InputField({
     super.key,
-    required this.labelText,
+    required this.hasLabel,
+    this.labelText,
     required this.hintText,
     required this.icon,
     this.autofocus,
@@ -39,46 +41,87 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          labelText.tr,
-          style: Themes.title_lg.copyWith(color: Themes.grayText),
-        ),
-        Themes.spaceY8,
-        TextFormField(
-          style: Themes.text_base,
-          maxLines: maxLines,
-          validator: validator,
-          controller: controller,
-          obscureText: obscureText != null ? true : false,
-          obscuringCharacter: "•",
-          keyboardType: type ?? TextInputType.text,
-          maxLength: maxLength,
-          inputFormatters: inputFormatters,
-          autofocus: autofocus != null ? true : false,
-          onChanged: onChanged,
-          initialValue: initialValue,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: Spacing.md,
-              vertical: Spacing.sm,
+    return hasLabel
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                labelText!.tr,
+                style: Themes.title_lg.copyWith(color: Themes.grayText),
+              ),
+              Themes.spaceY8,
+              TextFormField(
+                style: Themes.text_base,
+                maxLines: maxLines,
+                validator: validator,
+                controller: controller,
+                obscureText: obscureText != null ? true : false,
+                obscuringCharacter: "•",
+                keyboardType: type ?? TextInputType.text,
+                maxLength: maxLength,
+                inputFormatters: inputFormatters,
+                autofocus: autofocus != null ? true : false,
+                onChanged: onChanged,
+                initialValue: initialValue,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.md,
+                    vertical: Spacing.sm,
+                  ),
+                  focusColor: Themes.text,
+                  hintText: hintText.tr,
+                  hintStyle: Themes.text_base.copyWith(color: Themes.grayText),
+                  prefixIcon: icon != ""
+                      ? Image.asset(
+                          icon,
+                          color: Themes.iconGray,
+                        )
+                      : null,
+                  hintMaxLines: hintMaxLines,
+                  border: inputBorder(Themes.stroke, 1),
+                  enabledBorder: inputBorder(Themes.stroke, 1),
+                  focusedBorder: inputBorder(Themes.primary, 2),
+                  errorBorder: inputBorder(Themes.error, 1),
+                  focusedErrorBorder: inputBorder(Themes.error, 2),
+                ),
+              ),
+            ],
+          )
+        : TextFormField(
+            style: Themes.text_base,
+            maxLines: maxLines,
+            validator: validator,
+            controller: controller,
+            obscureText: obscureText != null ? true : false,
+            obscuringCharacter: "•",
+            keyboardType: type ?? TextInputType.text,
+            maxLength: maxLength,
+            inputFormatters: inputFormatters,
+            autofocus: autofocus != null ? true : false,
+            onChanged: onChanged,
+            initialValue: initialValue,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: Spacing.md,
+                vertical: Spacing.sm,
+              ),
+              focusColor: Themes.text,
+              hintText: hintText.tr,
+              hintStyle: Themes.text_base.copyWith(color: Themes.grayText),
+              prefixIcon: icon != ""
+                  ? Image.asset(
+                      icon,
+                      color: Themes.iconGray,
+                    )
+                  : null,
+              hintMaxLines: hintMaxLines,
+              border: inputBorder(Themes.stroke, 1),
+              enabledBorder: inputBorder(Themes.stroke, 1),
+              focusedBorder: inputBorder(Themes.primary, 2),
+              errorBorder: inputBorder(Themes.error, 1),
+              focusedErrorBorder: inputBorder(Themes.error, 2),
             ),
-            focusColor: Themes.text,
-            hintText: hintText.tr,
-            hintStyle: Themes.text_base.copyWith(color: Themes.grayText),
-            prefixIcon: icon,
-            hintMaxLines: hintMaxLines,
-            border: inputBorder(Themes.stroke, 1),
-            enabledBorder: inputBorder(Themes.stroke, 1),
-            focusedBorder: inputBorder(Themes.primary, 2),
-            errorBorder: inputBorder(Themes.error, 1),
-            focusedErrorBorder: inputBorder(Themes.error, 2),
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
 
@@ -127,7 +170,7 @@ class PasswordInputField extends StatelessWidget {
                 focusedErrorBorder: inputBorder(Themes.error, 2),
                 prefixIcon: Image.asset(
                   AppImg.lock_icon,
-                  color: Themes.grayText,
+                  color: Themes.iconGray,
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(

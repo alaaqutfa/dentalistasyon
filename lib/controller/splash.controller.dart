@@ -1,6 +1,9 @@
-import 'dart:io';
+import 'package:dentalistasyon/core/services/api.services.dart';
+import 'package:dentalistasyon/core/services/auth.services.dart';
 import 'package:dentalistasyon/core/services/services.dart';
 import 'package:dentalistasyon/core/utils/constant.dart';
+import 'package:dentalistasyon/core/utils/helpers.dart';
+import 'package:dentalistasyon/data/model/user.model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,29 +29,41 @@ class SplashControllerImp extends SplashController {
   @override
   Future splashFunction(bool fromBtn) async {
     if (fromBtn) {
-      try {
-        var res = await InternetAddress.lookup("google.com");
-        if (res.isNotEmpty && res[0].rawAddress.isNotEmpty) {
-          services.wifiConn = true;
-        } else {
-          services.wifiConn = false;
-        }
-      } on SocketException catch (_) {
-        services.wifiConn = false;
-      }
-      await splashPaths();
+      services.wifiConn = await checkInternetConnection();
     }
-    Future.delayed(Duration(seconds: 2), () {
-      splashPaths();
+    Future.delayed(Duration(seconds: 1), () async {
+      await splashPaths();
     });
   }
 
   @override
   Future splashPaths() async {
     if (services.wifiConn) {
-      if (isShowOnboarding == false) {
+      isShowOnboarding = services.shared.getBool("onboarding");
+
+      if (isShowOnboarding == false || isShowOnboarding == null) {
         Get.offAllNamed(AppRoutes.onboarding);
+        return;
+      }
+
+      String? accessToken = await ApiService.getValidAccessToken();
+      String? id = services.shared.getString("id");
+
+      if (accessToken != null && id != null) {
+        // جلب معلومات المستخدم
+        bool getUser = await User.init(id);
+        
+        if (getUser) {
+          // ✅ التوكن صالح، الدخول مباشرة إلى الصفحة الرئيسية
+          Get.offAllNamed(AppRoutes.home);
+        } else {
+          // ❌ id غير صالح
+          AuthService.clearTokens();
+          Get.offAllNamed(AppRoutes.starter);
+        }
       } else {
+        // ❌ التوكن غير صالح ولا يمكن تجديده، تسجيل خروج المستخدم
+        AuthService.clearTokens();
         Get.offAllNamed(AppRoutes.starter);
       }
     } else {

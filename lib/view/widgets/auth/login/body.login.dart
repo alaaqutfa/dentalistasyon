@@ -1,5 +1,5 @@
 import 'package:dentalistasyon/core/utils/constant.dart';
-import 'package:dentalistasyon/data/model/auth.modal.dart';
+import 'package:dentalistasyon/data/model/auth.model.dart';
 import 'package:dentalistasyon/view/widgets/auth/body.auth.dart';
 import 'package:dentalistasyon/view/widgets/auth/build.form.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +32,6 @@ class LoginBody extends StatelessWidget {
         true,
         onTapPrimaryBtn,
         onTapGuestBtn,
-        [],
-        "",
-        (val) {},
         {}
       ),
       question: "Don’t have an account?",

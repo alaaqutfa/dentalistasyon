@@ -2,7 +2,6 @@ import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:dentalistasyon/data/model/nav.model.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 Widget? defNav(BuildContext context, int selectedIndex) {
@@ -24,26 +23,24 @@ Widget? defNav(BuildContext context, int selectedIndex) {
         showUnselectedLabels: true,
         iconSize: Spacing.lg,
         items: [
-          buildNavItem(FontAwesomeIcons.house, "Home", 0),
-          buildNavItem(FontAwesomeIcons.table, "Categories", 1),
-          buildNavItem(FontAwesomeIcons.cartShopping, "Cart", 2),
-          buildNavItem(FontAwesomeIcons.box, "Orders", 3),
-          buildNavItem(FontAwesomeIcons.user, "Profile", 4),
+          bottomNavigationBarItem(0, selectedIndex, AppImg.home_icon, "Home"),
+          bottomNavigationBarItem(
+              1, selectedIndex, AppImg.categories_icon, "Categories"),
+          bottomNavigationBarItem(2, selectedIndex, AppImg.cart_icon, "Cart"),
+          bottomNavigationBarItem(
+              3, selectedIndex, AppImg.orders_icon, "Orders"),
+          bottomNavigationBarItem(
+              4, selectedIndex, AppImg.user_icon, "Profile"),
         ],
       ),
       Positioned(
-        top: -23,
-        left: MediaQuery.of(context).size.width / 5 * selectedIndex + 26,
+        top: -8,
+        left: MediaQuery.of(context).size.width / 5 * selectedIndex + 31,
         child: CustomPaint(
           painter: CurvePainter(),
           child: CircleAvatar(
-            radius: 14,
-            backgroundColor: Themes.bg,
-            foregroundColor: Themes.bg,
-            child: CircleAvatar(
-              radius: 8,
-              backgroundColor: Themes.primary,
-            ),
+            radius: 8,
+            backgroundColor: Themes.primary,
           ),
         ),
       ),
@@ -51,13 +48,18 @@ Widget? defNav(BuildContext context, int selectedIndex) {
   );
 }
 
-BottomNavigationBarItem buildNavItem(IconData icon, String label, int index) {
+BottomNavigationBarItem bottomNavigationBarItem(
+    int index, int currentIndex, String icon, String label) {
   return BottomNavigationBarItem(
-    icon: FaIcon(
-      icon,
+    icon: Padding(
+      padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
+      child: Image.asset(
+        icon,
+        color: index == currentIndex ? Themes.primary : Themes.grayText,
+        height: Spacing.rem * 1.25,
+      ),
     ),
-    label: label,
-    tooltip: label,
+    label: label.tr,
   );
 }
 
@@ -65,7 +67,7 @@ class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Themes.bg
+      ..color = Themes.bg.withOpacity(0)
       ..style = PaintingStyle.fill;
 
     Path path = Path();

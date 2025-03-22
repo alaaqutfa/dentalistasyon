@@ -1,5 +1,5 @@
 import 'package:dentalistasyon/core/theme/theme.dart';
-import 'package:dentalistasyon/data/model/auth.modal.dart';
+import 'package:dentalistasyon/data/model/auth.model.dart';
 import 'package:dentalistasyon/view/widgets/auth/build.form.dart';
 import 'package:dentalistasyon/view/widgets/partials/appBtn.dart';
 import 'package:flutter/material.dart';

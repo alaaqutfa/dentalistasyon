@@ -24,12 +24,8 @@ class StarterBody extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(AppImg.appicon),
-              Themes.spaceY32,
-              Text(
-                "Welcome to Dentalistasyon",
-                style: Themes.title_xl,
-              ),
+              Image.asset(AppImg.logo,
+              height: MediaQuery.of(context).size.width / 2,),
               Themes.spaceY64,
               btns(context, onTapCreate, onTapLogin),
               Themes.spaceY64,

@@ -1,21 +1,20 @@
+import 'package:dentalistasyon/core/services/services.dart';
 import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:dentalistasyon/core/utils/helpers.dart';
-import 'package:dentalistasyon/data/model/auth.modal.dart';
+import 'package:dentalistasyon/data/model/auth.model.dart';
+import 'package:dentalistasyon/data/repos/auth.repos.dart';
+import 'package:dentalistasyon/data/repos/user.repos.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 abstract class SignupController extends GetxController {
   //* Variables :
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Services services = Get.find();
+  GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
   final Map<String, TextEditingController> controllers = {};
-  bool ready = false;
+  RxBool ready = false.obs;
   RxBool isObscured = true.obs;
   RxBool isChecked = false.obs;
-  List<String> role = [
-    "doctor",
-    "student",
-  ];
-  String roleValue = "doctor";
   //* Functions :
   Future create();
   Future signup();
@@ -29,28 +28,84 @@ class SignupControllerImp extends SignupController {
   void onInit() async {
     super.onInit();
     await create();
+    controllers["Email"]!.text = "alaaqutfa.work@gmail.com";
+    controllers["Name"]!.text = "Alaa Qutfa";
+    controllers["Password"]!.text = "A123456a@";
+    controllers["Confirm password"]!.text = "A123456a@";
+    controllers["Diploma NO."]!.text = "1234567890";
   }
 
   @override
   Future create() async {
     insertControllers(controllers, signupFields);
-    ready = true;
+    ready.value = true;
     update();
   }
 
   @override
   Future signup() async {
-    bool valid = checkFormState(formKey);
-    if (valid) {
-      Map<String, String> info =
-          controllers.map((key, controller) => MapEntry(key, controller.text));
-      print(info);
-      Get.toNamed(AppRoutes.verify, arguments: {
-        "next": AppRoutes.home,
-        "email": controllers["Email"]?.text,
-        "info": info,
-        "OTP": "1111",
-      });
-    } else {}
+    if (isChecked.value) {
+      bool valid = checkFormState(signupFormKey);
+      if (valid) {
+        var res = await AuthRepos.signup(
+          controllers["Email"]!.text,
+          controllers["Name"]!.text,
+          controllers["Password"]!.text,
+          controllers["Diploma NO."]!.text,
+          services.shared.getString("lang") ?? "TR",
+        );
+        if (res.containsKey("errors")) {
+          if (context.mounted) {
+            return AppDialog.error(
+              context,
+              "Signup failed".tr,
+              () {},
+            );
+          }
+        }
+        if (res["success"]) {
+          var user = await UserRepos.getUserByEmail(controllers["Email"]!.text);
+          if (user.containsKey("errors")) {
+            if (context.mounted) {
+              return AppDialog.error(
+                context,
+                "Signup failed".tr,
+                () {},
+              );
+            }
+          }
+          Get.toNamed(AppRoutes.verify, arguments: {
+            "next": AppRoutes.login,
+            "purpose": "VERIFICATION",
+            "user": user,
+          });
+        } else {
+          if (context.mounted) {
+            return AppDialog.error(
+              context,
+              "Signup failed".tr,
+              () {},
+            );
+          }
+        }
+      } else {
+        if (context.mounted) {
+          AppDialog.error(
+            context,
+            "Please make sure to fill in all required fields.".tr,
+            () {},
+          );
+        }
+      }
+    } else {
+      if (context.mounted) {
+        AppDialog.warning(
+          context,
+          "Please agree to the terms and privacy".tr,
+          () {},
+          () {},
+        );
+      }
+    }
   }
 }

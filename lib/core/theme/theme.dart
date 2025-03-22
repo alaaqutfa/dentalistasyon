@@ -16,6 +16,8 @@ class Themes {
   static const link = ColorRef(AppColor.link);
   static const stroke = ColorRef(AppColor.stroke);
   static const grayText = ColorRef(AppColor.grayText);
+  static const iconGray = ColorRef(AppColor.iconGray);
+  static const whiteGray = ColorRef(AppColor.whiteGray);
   static const text = ColorRef(AppColor.textDark);
   static const bg = ColorRef(AppColor.backgroundWhite);
   static ColorRef shimmerBase = ColorRef(AppColor.shimmerBase);
@@ -57,6 +59,13 @@ class Themes {
       fontWeight: FontWeight.w400,
     ),
   );
+  static var text_xs = TextStyleRef(
+    TextStyle(
+      fontSize: FontSizes.xs,
+      color: AppColor.textDark,
+      fontWeight: FontWeight.w400,
+    ),
+  );
   static const linkStyle = TextStyleRef(
     TextStyle(
       fontSize: FontSizes.sm,
@@ -77,11 +86,14 @@ class Themes {
   );
 
   //* Custom EdgeInsets :
+  static const EdgeInsets edgeXs = EdgeInsets.all(Spacing.xs);
   static const EdgeInsets edgeSm = EdgeInsets.all(Spacing.sm);
   static const EdgeInsets edgeMd = EdgeInsets.all(Spacing.md);
   static const EdgeInsets edgeLg = EdgeInsets.all(Spacing.lg);
 
   //* Custom BorderRadius :
+  static const BorderRadius borderRadiusXs =
+      BorderRadius.all(Radius.circular(Spacing.xs));
   static const BorderRadius borderRadiusSm =
       BorderRadius.all(Radius.circular(Spacing.sm));
   static const BorderRadius borderRadiusMd =

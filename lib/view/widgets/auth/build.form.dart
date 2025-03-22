@@ -14,9 +14,6 @@ Widget authForm(
   bool isloginpage,
   Function()? onTapPrimaryBtn,
   Function()? onTapGuestBtn,
-  List<String> rolelist,
-  String roleValue,
-  Function(Object?)? onChanged,
   Map<String, TextEditingController> controllers,
 ) {
   return Form(
@@ -24,25 +21,6 @@ Widget authForm(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        !isloginpage
-            ? SelectField(
-                label: "Your role".tr,
-                value: roleValue,
-                items: rolelist
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          e.tr,
-                          style:
-                              Themes.text_base.copyWith(color: Themes.grayText),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: onChanged,
-              )
-            : Container(),
         ...fields.map(
           (field) {
             return Padding(
@@ -55,11 +33,9 @@ Widget authForm(
                   !field['isObscured']
                       ? InputField(
                           labelText: field['label'],
+                          hasLabel: true,
                           hintText: field['hint'],
-                          icon: Icon(
-                            field['icon'],
-                            color: Themes.grayText,
-                          ),
+                          icon: field['icon'],
                           type: field['keyboardType'],
                           validator: field['validator'],
                           controller: field['controller'],
@@ -137,11 +113,9 @@ Widget authJustFieldForm(
                 !field['isObscured']
                     ? InputField(
                         labelText: field['label'],
+                        hasLabel: true,
                         hintText: field['hint'],
-                        icon: Icon(
-                          field['icon'],
-                          color: Themes.grayText,
-                        ),
+                        icon: field['icon'],
                         type: field['keyboardType'],
                         validator: field['validator'],
                         controller: field['controller'],

@@ -1,4 +1,3 @@
-
 # Dentalistasyon
 
 **Dentalistasyon** is a Flutter application designed specifically for the dental sector, providing advanced features for users.
@@ -10,8 +9,6 @@
 - **Backend Communication:** GraphQL
 - **Backend:** Node.js
 - **Frontend:** Next.js
-- **Development Duration:** Two months
-- **Agreed Cost:** $1500
 
 ## 🚀 How to Run
 
@@ -73,4 +70,4 @@ Dentalistasyon/
 
 ## 📜 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **MIT**.

@@ -2,7 +2,6 @@ import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:dentalistasyon/view/widgets/partials/progress.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class SplashBody extends StatelessWidget {
   final String version;
@@ -17,15 +16,9 @@ class SplashBody extends StatelessWidget {
         children: [
           // الشعار
           Image.asset(
-            AppImg.appicon,
+            AppImg.logo,
             width: MediaQuery.of(context).size.width / 4,
             height: MediaQuery.of(context).size.width / 4,
-          ),
-          Themes.spaceY16,
-          // اسم التطبيق
-          Text(
-            "Dentalistasyon".tr,
-            style: Themes.title_2xl,
           ),
           Themes.spaceY16,
           // الأصدار

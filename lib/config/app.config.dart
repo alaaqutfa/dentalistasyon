@@ -1,7 +1,11 @@
 class AppConfig {
+  static bool debugMode = true;
   static bool isHttps = true;
-  // static String liveBaseUrl = "api.dentalistasyon.com";
-  static String testBaseUrl = "test.dentalistasyon.com";
+  static String siteUrl = "dentalistasyon.com";
+  static String defSiteUrl =
+      isHttps ? "https://$siteUrl" : "http://$siteUrl";
+  // static String liveBaseUrl = "api.$siteUrl";
+  static String testBaseUrl = "test.$siteUrl";
   static String prefix = "graphql";
   static String defUrl =
       isHttps ? "https://$testBaseUrl" : "http://$testBaseUrl";
@@ -13,3 +17,4 @@ class AppConfig {
         "bdfae89ae927c92c9025967aa1217d495265a1ff8c2c3873154ad103efc8a1a0",
   };
 }
+

@@ -1,5 +1,5 @@
 import 'package:dentalistasyon/core/localization/setlocale.dart';
-import 'package:dentalistasyon/view/widgets/locales/body.dart';
+import 'package:dentalistasyon/view/widgets/locales/body.locales.dart';
 import 'package:dentalistasyon/view/widgets/partials/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +15,7 @@ class Locales extends StatelessWidget {
           child: GetBuilder(
             init: SetlocaleController(),
             builder: (controller) => LocalesBody(
-              currentLocale: controller.currentLocale!,
+              currentLocale: controller.currentLocale,
               onTapEn: () {
                 controller.setLocale("en");
               },

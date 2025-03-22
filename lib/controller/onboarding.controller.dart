@@ -18,7 +18,7 @@ class OnBoardingControllerImp extends OnBoardingController {
   @override
   exitOnboarding(String page) {
     services.shared.setBool("onboarding", true);
-    Get.toNamed(page);
+    Get.offAllNamed(page);
   }
 
 

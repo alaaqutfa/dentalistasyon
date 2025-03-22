@@ -1,21 +1,22 @@
 import 'package:dentalistasyon/core/utils/constant.dart';
+import 'package:dentalistasyon/data/repos/auth.repos.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 
 abstract class VerifyController extends GetxController {
   //* Variables :
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final Map<String, TextEditingController> controllers = {};
   var data = Get.arguments;
-  bool ready = false;
   RxInt seconds = 60.obs;
   Timer? timer;
-  RxBool autovalidate = true.obs;
+  bool validate = false;
+  String otp = "";
   //* Functions :
   startCountdown();
   resetCountdown();
   Future verify();
+  Future resend();
 }
 
 class VerifyControllerImp extends VerifyController {
@@ -50,11 +51,51 @@ class VerifyControllerImp extends VerifyController {
 
   @override
   Future verify() async {
-    if (autovalidate.value) {
-      if (data["next"] == AppRoutes.home) {
-        Get.offAllNamed(data["next"], arguments: data["info"]);
+    if (validate) {
+      dynamic res;
+      if (data["purpose"] == "CHANGE_PASSWORD") {
+        res = await AuthRepos.verifyPasswordResetOtp(data["user"]["id"], otp);
       } else {
-        Get.toNamed(data["next"]);
+        res = await AuthRepos.verifyOtp(data["user"]["id"], otp);
+      }
+      if (res) {
+        return Get.offNamed(data["next"], arguments: {
+          "otp": otp,
+          "user": data["user"],
+        });
+      }
+      if (res.containsKey("errors")) {
+        if (context.mounted) {
+          return AppDialog.error(
+            context,
+            "Invalid OTP".tr,
+            () {},
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  Future resend() async {
+    resetCountdown();
+    var res = await AuthRepos.resendOtp(data["purpose"], data["user"]["email"]);
+    if (res) {
+      if (context.mounted) {
+        return AppDialog.success(
+          context,
+          "OTP code has been sent successfully to ".tr + data["user"]["email"],
+          () {},
+        );
+      }
+    }
+    if (res.containsKey("errors")) {
+      if (context.mounted) {
+        return AppDialog.error(
+          context,
+          "OTP resend is not allowed yet. Please wait a bit longer.".tr,
+          () {},
+        );
       }
     }
   }

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:dentalistasyon/core/utils/helpers.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,16 +11,7 @@ class Services extends GetxService {
   Future<Services> init() async {
     shared = await SharedPreferences.getInstance();
     packageInfo = await PackageInfo.fromPlatform();
-    try {
-      var res = await InternetAddress.lookup("google.com");
-      if (res.isNotEmpty && res[0].rawAddress.isNotEmpty) {
-        wifiConn = true;
-      } else {
-        wifiConn = false;
-      }
-    } on SocketException catch (_) {
-      wifiConn = false;
-    }
+    wifiConn = await checkInternetConnection();
     return this;
   }
 }

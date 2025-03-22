@@ -114,7 +114,7 @@ class AuthBody extends StatelessWidget {
 Widget logo(BuildContext context) {
   return Center(
     child: Image.asset(
-      AppImg.appicon,
+      AppImg.logo,
       width: MediaQuery.of(context).size.width / 4,
       height: MediaQuery.of(context).size.width / 4,
       fit: BoxFit.contain,
