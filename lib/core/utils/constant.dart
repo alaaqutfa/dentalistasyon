@@ -168,7 +168,7 @@ class AppDialog {
       title: "Success".tr,
       desc: desc!.tr,
       btnOkOnPress: btnOkOnPress,
-      btnOkIcon: Icons.cancel,
+      btnOkIcon: Icons.done,
       btnOkColor: AppColor.success,
       btnOkText: "Ok".tr,
       dismissOnTouchOutside: false,

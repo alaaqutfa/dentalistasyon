@@ -205,25 +205,27 @@ dynamic handleData(var res, String key) {
 }
 
 List<Map<String, dynamic>> getHotDealsData(List<dynamic> deals) {
-  return deals.map((item) {
-    var product = item["storeProduct"]["product"];
+  return deals.map(
+    (item) {
+      var product = item["storeProduct"]["product"];
 
-    return {
-      "id": product["id"],
-      "name": product["name"] ?? "",
-      "imgUrl": (product["productImages"] as List).firstWhere(
-              (img) => img["is_main"] == true,
-              orElse: () => {"image_url": ""})["image_url"] ??
-          "",
-      "newPrice": (item["newPrice"] as num?)?.toStringAsFixed(2) ?? "0.00",
-      "discounted_price":
-          (item["discounted_price"] as num?)?.toStringAsFixed(2) ?? "0.00",
-      "discountPercentage":
-          (item["discountPercentage"] as num?)?.toStringAsFixed(2) ?? "0.00",
-      "rate": item["averageRating"]?.toString() ?? "0",
-      "sold": item["storeProduct"]["sold_quantity"]?.toString() ?? "0",
-    };
-  }).toList();
+      return {
+        "id": product["id"],
+        "name": product["name"] ?? "",
+        "imgUrl": (product["productImages"] as List).firstWhere(
+                (img) => img["is_main"] == true,
+                orElse: () => {"image_url": ""})["image_url"] ??
+            "",
+        "newPrice": (item["newPrice"] as num?)?.toStringAsFixed(2) ?? "0.00",
+        "discounted_price":
+            (item["discounted_price"] as num?)?.toStringAsFixed(2) ?? "0.00",
+        "discountPercentage":
+            (item["discountPercentage"] as num?)?.toStringAsFixed(2) ?? "0.00",
+        "rate": item["averageRating"]?.toString() ?? "0",
+        "sold": item["storeProduct"]["sold_quantity"]?.toString() ?? "0",
+      };
+    },
+  ).toList();
 }
 
 List<Map<String, dynamic>> getBrandsData(List<dynamic> brands) {
@@ -317,4 +319,28 @@ String formatDate(String dateString) {
   DateTime dateTime = DateTime.parse(dateString);
   String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
   return formattedDate;
+}
+
+List<dynamic> getDataFromUserCart(List<dynamic> cartItems) {
+  return cartItems.map(
+    (item) {
+      return {
+        "id": item["id"],
+        "productId": item["productId"],
+        "productName": item["productName"],
+        "price": (item["price"] as num?)?.toStringAsFixed(2) ?? "0.00",
+        "discountedPrice":
+            (item["discountedPrice"] as num?)?.toStringAsFixed(2) ?? "0.00",
+        "quantity": item["quantity"].toString(),
+        "img": item["imageUrl"],
+        "totalPrice":
+            (item["totalPrice"] as num?)?.toStringAsFixed(2) ?? "0.00",
+        "totalDiscountedPrice":
+            (item["totalDiscountedPrice"] as num?)?.toStringAsFixed(2) ??
+                "0.00",
+        "shippingPrice":
+            (item["shippingPrice"] as num?)?.toStringAsFixed(2) ?? "0.00",
+      };
+    },
+  ).toList();
 }

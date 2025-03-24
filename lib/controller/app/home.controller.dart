@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:dentalistasyon/core/utils/helpers.dart';
 import 'package:dentalistasyon/data/repos/home.repos.dart';
 import 'package:dentalistasyon/data/repos/products.repos.dart';
@@ -36,6 +37,9 @@ abstract class HomeController extends GetxController {
   //* Functions :
   Future reFresh();
   Future faceAll();
+  Future loadMore();
+  cleanAll();
+  onTapProduct(String id);
   scrollListener();
   Future getHotDeals();
   Future getBrands();
@@ -46,7 +50,6 @@ abstract class HomeController extends GetxController {
   Future getBuyMoreSaveMoreProducts();
   Future getExpressProducts();
   Future getLatestProducts();
-  Future loadMore();
 }
 
 class HomeControllerImp extends HomeController {
@@ -70,6 +73,7 @@ class HomeControllerImp extends HomeController {
   Future reFresh() async {
     ready = false;
     update();
+    cleanAll();
     await faceAll();
     ready = true;
     update();
@@ -86,6 +90,27 @@ class HomeControllerImp extends HomeController {
     await getBuyMoreSaveMoreProducts();
     await getExpressProducts();
     await getLatestProducts();
+  }
+
+  @override
+  cleanAll() {
+    hotDeals = [];
+    brands = [];
+    newArrivalsProducts = [];
+    featuredItemsProducts = [];
+    mostPopularProducts = [];
+    backinStockProducts = [];
+    buyMoreSaveMoreProducts = [];
+    expressProducts = [];
+    latestProducts = [];
+  }
+
+  @override
+  onTapProduct(String id) {
+    Get.toNamed(
+      AppRoutes.product,
+      arguments: {"id": id},
+    );
   }
 
   @override

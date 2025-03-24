@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/core/utils/carouselslider.dart';
-import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:dentalistasyon/data/model/products.model.dart';
 import 'package:dentalistasyon/view/widgets/app/home/partials/nav.home.dart';
+import 'package:dentalistasyon/view/widgets/partials/appImg.dart';
 import 'package:dentalistasyon/view/widgets/partials/search.home.dart';
 import 'package:dentalistasyon/view/widgets/app/home/partials/sections.home.dart';
 import 'package:dentalistasyon/view/widgets/app/home/partials/shimmer.home.dart';
@@ -39,6 +39,7 @@ class HomeBody extends StatelessWidget {
   final List<Map<String, dynamic>> latestProducts;
   final ScrollController? scrollController;
   final bool loading;
+  final Function(String) onTapProduct;
 
   const HomeBody({
     super.key,
@@ -67,6 +68,7 @@ class HomeBody extends StatelessWidget {
     required this.buyMoreSaveMoreProducts,
     required this.expressProducts,
     required this.latestProducts,
+    required this.onTapProduct,
   });
 
   @override
@@ -114,15 +116,18 @@ class HomeBody extends StatelessWidget {
                 current: current,
                 buttonCarouselController: buttonCarouselController,
                 items: imageUrls
-                    .map((url) => ClipRRect(
-                          borderRadius: Themes.borderRadiusSm,
-                          child: Image.network(
-                            url,
-                            width: double.infinity,
-                            height: 170,
-                            fit: BoxFit.cover,
-                          ),
-                        ))
+                    .map(
+                      (url) => ClipRRect(
+                        borderRadius: Themes.borderRadiusSm,
+                        child: AppNetworkImg(
+                          url,
+                          width: double.infinity,
+                          height: 170,
+                          fit: BoxFit.cover,
+                          assetFit: BoxFit.cover,
+                        ),
+                      ),
+                    )
                     .toList(),
                 onTap: onTapAppSlider,
               )
@@ -141,14 +146,9 @@ class HomeBody extends StatelessWidget {
                     items: deals
                         .map(
                           (deal) => InkWell(
+                            //TODO Get hotdeal product by id
                             onTap: () {
-                              // يمكنك تنفيذ إجراء عند النقر هنا
-                              print("\x1B[2J\x1B[0;0H");
-                              print("================");
-                              print(deal["id"]);
-                              print("================");
-                              Get.toNamed(AppRoutes.product,
-                                  arguments: {"id": deal["id"]});
+                              // onTapProduct(deal["id"]);
                             },
                             child: hotDeal(deal),
                           ),
@@ -177,13 +177,8 @@ class HomeBody extends StatelessWidget {
                     itemCount: brands.length,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {
-                          // يمكنك تنفيذ إجراء عند النقر هنا
-                          print("\x1B[2J\x1B[0;0H");
-                          print("================");
-                          print(brands[index]);
-                          print("================");
-                        },
+                        //TODO Get Products by brand id
+                        onTap: () {},
                         child: brand(brands[index]),
                       );
                     },
@@ -207,6 +202,7 @@ class HomeBody extends StatelessWidget {
             newArrivalsProducts,
             offerToolTipModel[0]["name"],
             offerToolTipModel[0]["color"],
+            onTapProduct,
           ),
         ),
         Themes.spaceY16,
@@ -217,6 +213,7 @@ class HomeBody extends StatelessWidget {
             featuredItemsProducts,
             offerToolTipModel[1]["name"],
             offerToolTipModel[1]["color"],
+            onTapProduct,
           ),
         ),
         Themes.spaceY16,
@@ -227,6 +224,7 @@ class HomeBody extends StatelessWidget {
             mostPopularProducts,
             offerToolTipModel[2]["name"],
             offerToolTipModel[2]["color"],
+            onTapProduct,
           ),
         ),
         Themes.spaceY16,
@@ -237,6 +235,7 @@ class HomeBody extends StatelessWidget {
             backinStockProducts,
             offerToolTipModel[3]["name"],
             offerToolTipModel[3]["color"],
+            onTapProduct,
           ),
         ),
         Themes.spaceY16,
@@ -247,6 +246,7 @@ class HomeBody extends StatelessWidget {
             buyMoreSaveMoreProducts,
             offerToolTipModel[4]["name"],
             offerToolTipModel[4]["color"],
+            onTapProduct,
           ),
         ),
         Themes.spaceY16,
@@ -257,13 +257,18 @@ class HomeBody extends StatelessWidget {
             expressProducts,
             offerToolTipModel[5]["name"],
             offerToolTipModel[5]["color"],
+            onTapProduct,
           ),
         ),
         Themes.spaceY16,
         homeSection(
           "Latest Products",
           () {},
-          buildGridProduct(context, latestProducts),
+          buildGridProduct(
+            context,
+            latestProducts,
+            onTapProduct,
+          ),
         ),
         Themes.spaceY16,
         loading ? AppProgress() : Container(),

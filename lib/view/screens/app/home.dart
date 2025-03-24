@@ -49,6 +49,7 @@ class Home extends StatelessWidget {
           latestProducts: controller.latestProducts,
           scrollController: controller.scrollController,
           loading: controller.isLoading,
+          onTapProduct: (id) => controller.onTapProduct(id),
         ),
       ),
     );

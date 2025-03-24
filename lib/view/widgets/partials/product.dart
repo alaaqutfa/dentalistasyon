@@ -1,5 +1,6 @@
 import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/core/utils/constant.dart';
+import 'package:dentalistasyon/view/widgets/partials/appImg.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -236,32 +237,12 @@ Widget defProductImg(
       color: Themes.light,
     ),
     clipBehavior: Clip.antiAlias,
-    child: Image.network(
+    child: AppNetworkImg(
       img,
-      width: double.infinity - 10, // يمكنك ضبط الحجم هنا حسب الحاجة
-      height: 125, // التأكد من أن العرض والارتفاع متساويين
+      width: double.infinity,
+      height: 125,
       fit: BoxFit.contain,
-      loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent? loadingProgress) {
-        if (loadingProgress == null) {
-          return child; // الصورة تم تحميلها بالكامل
-        } else {
-          return Center(
-            child: CircularProgressIndicator(), // عرض مؤشر التحميل
-          );
-        }
-      },
-      errorBuilder:
-          (BuildContext context, Object error, StackTrace? stackTrace) {
-        return Center(
-          child: Image.asset(
-            AppImg.placeholder,
-            width: double.infinity, // يمكنك ضبط الحجم هنا حسب الحاجة
-            height: 125, // التأكد من أن العرض والارتفاع متساويين
-            fit: BoxFit.cover,
-          ), // عرض أيقونة خطأ إذا فشل تحميل الصورة
-        );
-      },
+      assetFit: BoxFit.cover,
     ),
   );
 }
@@ -441,6 +422,7 @@ Widget buildHorizontalProduct(
   List<Map<String, dynamic>> products,
   String toolTipText,
   Color toolTipColor,
+  Function(String) onTapProduct,
 ) {
   return products.isNotEmpty
       ? SizedBox(
@@ -453,13 +435,7 @@ Widget buildHorizontalProduct(
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    // يمكنك تنفيذ إجراء عند النقر هنا
-                    print("\x1B[2J\x1B[0;0H");
-                    print("================");
-                    print(products[index]["id"]);
-                    print("================");
-                    Get.toNamed(AppRoutes.product,
-                        arguments: {"id": products[index]["id"]});
+                    onTapProduct(products[index]["id"]);
                   },
                   child: product(
                     context,
@@ -485,6 +461,7 @@ Widget buildHorizontalProduct(
 Widget buildGridProduct(
   BuildContext context,
   List<Map<String, dynamic>> products,
+  Function(String) onTapProduct,
 ) {
   return products.isNotEmpty
       ? SizedBox(
@@ -503,13 +480,7 @@ Widget buildGridProduct(
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  // يمكنك تنفيذ إجراء عند النقر هنا
-                  print("\x1B[2J\x1B[0;0H");
-                  print("================");
-                  print(products[index]["id"]);
-                  print("================");
-                  Get.toNamed(AppRoutes.product,
-                      arguments: {"id": products[index]["id"]});
+                  onTapProduct(products[index]["id"]);
                 },
                 child: product(
                   context,

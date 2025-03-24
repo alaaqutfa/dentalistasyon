@@ -1,5 +1,6 @@
 import 'package:dentalistasyon/core/theme/theme.dart';
 import 'package:dentalistasyon/core/utils/constant.dart';
+import 'package:dentalistasyon/view/widgets/partials/appImg.dart';
 import 'package:dentalistasyon/view/widgets/partials/product.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -142,19 +143,13 @@ Widget hotDealImg(String img) {
       color: Colors.transparent,
     ),
     clipBehavior: Clip.antiAlias,
-    child: img.isNotEmpty
-        ? Image.network(
-            img,
-            fit: BoxFit.contain,
-            width: 120,
-            height: 110,
-          )
-        : Image.asset(
-            AppImg.placeholder,
-            fit: BoxFit.cover,
-            width: 120,
-            height: 110,
-          ),
+    child: AppNetworkImg(
+      img,
+      width: 120,
+      height: 110,
+      fit: BoxFit.contain,
+      assetFit: BoxFit.cover,
+    ),
   );
 }
 
@@ -205,28 +200,12 @@ Widget brand(Map<String, dynamic> brand) {
           radius: 45,
           backgroundColor: Themes.light,
           child: ClipOval(
-            child: Image.network(
+            child: AppNetworkImg(
               imgUrl,
-              width: 80, // يمكنك ضبط الحجم هنا حسب الحاجة
-              height: 80, // التأكد من أن العرض والارتفاع متساويين
+              width: 80,
+              height: 80,
               fit: BoxFit.contain,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child; // الصورة تم تحميلها بالكامل
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(), // عرض مؤشر التحميل
-                  );
-                }
-              },
-              errorBuilder:
-                  (BuildContext context, Object error, StackTrace? stackTrace) {
-                return Center(
-                  child: Icon(Icons.error,
-                      color: Colors.red), // عرض أيقونة خطأ إذا فشل تحميل الصورة
-                );
-              },
+              assetFit: BoxFit.cover,
             ),
           ),
         ),

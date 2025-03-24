@@ -162,5 +162,8 @@ Map<String, String> tr = {
   "You have viewed all products.": "",
   "Total Price": "",
   "Add to cart": "",
+  "Added to cart": "",
+  "Added to cart successfully": "",
+  "Something went wrong. Please try again later.": "",
   "": "",
 };

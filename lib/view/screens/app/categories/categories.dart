@@ -12,14 +12,13 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: defFloatingActionButton(context),
-      bottomNavigationBar: defNav(context, 1),
       body: GetBuilder(
         init: CategoriesControllerImp(context: context),
         builder: (controller) => CategoriesBody(
           onRefresh: () async {},
-          selectedCategories: controller.selectedCategories,
         ),
       ),
+      bottomNavigationBar: defNav(context, 1),
     );
   }
 }

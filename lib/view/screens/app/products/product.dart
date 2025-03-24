@@ -23,12 +23,15 @@ class Product extends StatelessWidget {
           reviews: controller.reviews,
           relatedProducts: controller.relatedProducts,
         ),
-        bottomNavigationBar: buildBottomNavigationBar(
-          controller.product["price"],
-          () async {
-            await controller.addToCart();
-          },
-        ),
+        bottomNavigationBar: controller.ready
+            ? buildBottomNavigationBar(
+                controller.addedToCart,
+                controller.product["price"],
+                () async {
+                  await controller.addToCart();
+                },
+              )
+            : buildBottomNavigationBarShimmer(),
       ),
     );
   }

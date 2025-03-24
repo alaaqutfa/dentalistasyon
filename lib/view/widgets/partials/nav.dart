@@ -13,7 +13,7 @@ Widget? defNav(BuildContext context, int selectedIndex) {
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: (index) {
-          Get.offNamed(navPages[index]);
+          Get.toNamed(navPages[index]);
         },
         backgroundColor: Themes.bg,
         selectedItemColor: Themes.primary,

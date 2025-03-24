@@ -6,6 +6,7 @@ import 'package:dentalistasyon/data/model/products.model.dart';
 import 'package:dentalistasyon/view/widgets/app/home/partials/sections.home.dart';
 import 'package:dentalistasyon/view/widgets/app/home/partials/shimmer.home.dart';
 import 'package:dentalistasyon/view/widgets/partials/appBtn.dart';
+import 'package:dentalistasyon/view/widgets/partials/appImg.dart';
 import 'package:dentalistasyon/view/widgets/partials/product.dart';
 import 'package:dentalistasyon/view/widgets/partials/refreshpage.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,7 @@ Widget productImgContainer(Map<String, dynamic> product, RxString mainImg) {
       borderRadius: Themes.borderRadiusMd,
     ),
     child: Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Obx(
           () => thumbnail(mainImg.value),
@@ -153,32 +155,12 @@ Widget thumbnail(String img) {
       ),
     ),
     clipBehavior: Clip.antiAliasWithSaveLayer,
-    child: Image.network(
+    child: AppNetworkImg(
       img,
       width: double.infinity,
       height: 297,
       fit: BoxFit.contain,
-      loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent? loadingProgress) {
-        if (loadingProgress == null) {
-          return child; // الصورة تم تحميلها بالكامل
-        } else {
-          return Center(
-            child: CircularProgressIndicator(), // عرض مؤشر التحميل
-          );
-        }
-      },
-      errorBuilder:
-          (BuildContext context, Object error, StackTrace? stackTrace) {
-        return Center(
-          child: Image.asset(
-            AppImg.placeholder,
-            width: double.infinity, // يمكنك ضبط الحجم هنا حسب الحاجة
-            height: 297, // التأكد من أن العرض والارتفاع متساويين
-            fit: BoxFit.cover,
-          ), // عرض أيقونة خطأ إذا فشل تحميل الصورة
-        );
-      },
+      assetFit: BoxFit.cover,
     ),
   );
 }
@@ -220,32 +202,12 @@ Widget galleryImg(Map<String, dynamic> product, RxString img, int index) {
         borderRadius: Themes.borderRadiusSm,
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Image.network(
+      child: AppNetworkImg(
         product["productImages"][index]["image_url"],
         width: 59,
         height: 59,
         fit: BoxFit.contain,
-        loadingBuilder: (BuildContext context, Widget child,
-            ImageChunkEvent? loadingProgress) {
-          if (loadingProgress == null) {
-            return child; // الصورة تم تحميلها بالكامل
-          } else {
-            return Center(
-              child: CircularProgressIndicator(), // عرض مؤشر التحميل
-            );
-          }
-        },
-        errorBuilder:
-            (BuildContext context, Object error, StackTrace? stackTrace) {
-          return Center(
-            child: Image.asset(
-              AppImg.placeholder,
-              width: double.infinity, // يمكنك ضبط الحجم هنا حسب الحاجة
-              height: 297, // التأكد من أن العرض والارتفاع متساويين
-              fit: BoxFit.cover,
-            ), // عرض أيقونة خطأ إذا فشل تحميل الصورة
-          );
-        },
+        assetFit: BoxFit.cover,
       ),
     ),
   );
@@ -434,6 +396,7 @@ Widget buildPackagingType() {
 
 Widget buildProductDetails() {
   return Column(
+    mainAxisSize: MainAxisSize.min,
     children: [
       // Nav
       Container(
@@ -552,6 +515,7 @@ Widget buildHorizontalReviews(List<dynamic> reviews) {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -677,7 +641,8 @@ Widget buildHorizontalRelatedProduct(
         );
 }
 
-Widget buildBottomNavigationBar(String price, Function()? onTap) {
+Widget buildBottomNavigationBar(
+    bool addedToCart, String price, Function()? onTap) {
   return Container(
     width: double.infinity,
     height: 100,
@@ -702,7 +667,11 @@ Widget buildBottomNavigationBar(String price, Function()? onTap) {
           ],
         ),
         Themes.spaceX16,
-        defBtn(210, Themes.primary, () {}, "Add to cart", true),
+        addedToCart
+            ? defBtn(210, Themes.success, () {
+                Get.toNamed(AppRoutes.cart);
+              }, "Added to cart", true)
+            : defBtn(210, Themes.primary, onTap, "Add to cart", true),
       ],
     ),
   );
@@ -780,9 +749,7 @@ Widget productImgContainerShimmer() {
     ),
     child: Column(
       children: [
-        Obx(
-          () => ShimmerHelper().buildDefaultShimmer(thumbnailShimmer()),
-        ),
+        ShimmerHelper().buildDefaultShimmer(thumbnailShimmer()),
         Themes.spaceY16,
         galleryShimmer(),
         Themes.spaceY16,
@@ -1176,6 +1143,38 @@ Widget buildHorizontalReviewsShimmer() {
           ),
         );
       },
+    ),
+  );
+}
+
+Widget buildBottomNavigationBarShimmer() {
+  return Container(
+    width: double.infinity,
+    height: 100,
+    padding: Themes.edgeMd,
+    alignment: Alignment.center,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ShimmerHelper().buildDefaultShimmer(Text(
+              "Total Price".tr,
+              style: Themes.text_sm.copyWith(
+                fontSize: FontSizes.sm - 2,
+              ),
+            )),
+            Themes.spaceY8,
+            // Price & Currency
+            ShimmerHelper().buildDefaultShimmer(buildPrice("00", "TL")),
+          ],
+        ),
+        Themes.spaceX16,
+        ShimmerHelper().buildDefaultShimmer(
+            defBtn(210, Themes.primary, () {}, "Add to cart", true)),
+      ],
     ),
   );
 }

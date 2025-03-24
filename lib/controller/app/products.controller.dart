@@ -1,4 +1,5 @@
 import 'package:dentalistasyon/core/services/services.dart';
+import 'package:dentalistasyon/core/utils/constant.dart';
 import 'package:dentalistasyon/core/utils/helpers.dart';
 import 'package:dentalistasyon/data/repos/cart.repos.dart';
 import 'package:dentalistasyon/data/repos/products.repos.dart';
@@ -20,10 +21,12 @@ abstract class ProductsController extends GetxController {
   int reviewsLimit = 10;
   int relatedProductsPage = 1;
   int relatedProductsLimit = 10;
+  bool addedToCart = false;
 
   //* Functions :
   Future reFresh();
   Future getProduct();
+  Future checkCart();
   Future addToCart();
 }
 
@@ -35,6 +38,7 @@ class ProductsControllerImp extends ProductsController {
   void onInit() async {
     super.onInit();
     await reFresh();
+    await checkCart();
   }
 
   @override
@@ -68,6 +72,42 @@ class ProductsControllerImp extends ProductsController {
   @override
   Future addToCart() async {
     var res = await CartRepos.addToCart(product["id"], 1);
-    print(res);
+    if (res["productId"] == product["id"]) {
+      addedToCart = true;
+      update();
+      if (context.mounted) {
+        AppDialog.success(
+          context,
+          "Added to cart successfully".tr,
+          () {},
+        );
+      }
+    } else {
+      addedToCart = false;
+      update();
+      if (context.mounted) {
+        AppDialog.error(
+          context,
+          "Something went wrong. Please try again later.".tr,
+          () {},
+        );
+      }
+    }
+  }
+
+  @override
+  Future checkCart() async {
+    var res = await CartRepos.getUserCart(1, 10);
+    if (res["items"] != null) {
+      List<dynamic> cartProducts =
+          res["items"].map((item) => item["productId"]).toList();
+      for (var productId in cartProducts) {
+        if (productId == product["id"]) {
+          addedToCart = true;
+          update();
+          return;
+        }
+      }
+    }
   }
 }
